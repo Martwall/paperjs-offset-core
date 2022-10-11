@@ -1,6 +1,6 @@
 {
   "name": "paperjs-offset-core",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "An offset function for paperjs paths when using paper-core.js",
   "main": "dist/index.umd.js",
   "module": "dist/index.esm.js",
