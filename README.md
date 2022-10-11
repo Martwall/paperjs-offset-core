@@ -1,47 +1,44 @@
-# Paperjs Offset
+# Paperjs Offset Core
+
+A fork from the excellent work made in paperjs-offset (Thanks!). The difference is to be able to provide a PaperScope to the offsetting functionality in case you need to work with paper-core.js directly from paper/dist/paper-core. Current use case is when using paper-core.js and working with paperjs using javascript with a bundler included. Could perhaps also be useful when working with multiple paperjs scopes.
+Other changes includes:
+
+- Removed deprecated ExtendPaperJs functionality.
+- Removed window global
+
+Under development. Not tested for use in Node.js, only in browser.
+
+## Background from original paperjs-offset, 2016-2019
+***
 The dicussion to implement a offset function in paper.js started years ago, yet the author have not decided to put a offset feature into the library. So I implement an extension of my own.
 <br/>As far as I know, the author has promised recently to implement a native offset functionality in near feature, the library will be closed once the native implement is published.
 <br/>This library implement both path offset and stroke offset, you may offset a path or expand a stroke like what you did in Adobe illustrator. Offset complicate path may cause unwanted self intersections, this library already take care some cases but bugs still exists. Please let me notice the false conditions in the issue pannel so I can correct it.
+***
 
 ## Usage
-For node development, use
+Installation
 ```sh
-npm install paperjs-offset
+npm install paperjs-offset-core
 ```
-And then, in you project:
+And then, in your project:
 ```javascript
-import paper from 'paper'
+import paper from 'paper' // if using bundlers otherwise skip and include in <script>. See demo dir.
 import { PaperOffset } from 'paperjs-offset'
+// Optionally setup paper
+let canvas = document.querySelector('canvas')
+paper.setup(canvas)
+paper.view.center = [0, 0]
 
+const offsetOptions = {
+  scope: paper
+  // ...other options
+}
+let path = new paper.Path(/* params */)
 // call offset
-PaperOffset.offset(path, offset, options)
+PaperOffset.offset(path, offset, offsetOptions)
 
 // call offset stroke
-PaperOffset.offsetStroke(path, offset, options)
-```
-
-You may still use the old way to extend paperjs module, which is **deprecated** and will be removed in future version.
-```typescript
-import ExtendPaperJs from 'paperjs-offset'
-// extend paper.Path, paper.CompoundPath with offset, offsetStroke method
-ExtendPaperJs(paper);
-
-// Warning: The library no longer include extended definitions for paper.Path & paper.CompoundPath, you may need your own declarations to use extension in typescript.
-(path as any).offset(10);
-```
-
-Or for web development, include the **paperjs-offset.js** or **paperjs-offset.min.js** in demo folder.
-<br/>The library now exposes a global variable **PaperOffset**, again, the extension of **paper.Path** and **paper.CompoundPath** with offset/offsetStroke functions is still available, but no longer recommended.
-```javascript
-let path = new paper.Path(/* params */)
-
-PaperOffset.offset(path, 10, { join: 'round' })
-PaperOffset.offsetStroke(path, 10, { cap: 'round' })
-
-// deprecated
-path.offset(10, { join: 'round' })
-// deprecated
-path.offsetStroke(10, { cap: 'round' })
+PaperOffset.offsetStroke(path, offset, offsetOptions)
 ```
 
 Sample references:
@@ -59,14 +56,13 @@ interface OffsetOptions {
   limit?: number;
   // whether the result should be insert into the canvas, default is true
   insert?: boolean;
+  // reference to the PaperScope
+  scope: paper.PaperScope
 }
 ```
 
 ## Preview
-There are some cases that the library may return weird result or failed silently, please let me noticed in the project issues. And in some cases the library will yeild an ok result than a perfect one. Currently the library should give good results for closed shapes, but may fail in some open curve cases, I'm still working on it.
-![Preview](/public/preview.jpg)
-
 You can use open demo folder for simple cases demonstration.
 
 ## License
-Distributed under the MIT license. See [LICENSE](https://github.com/glenzli/paperjs-offset/blob/master/LICENSE) for detail.
+Distributed under the MIT license.
