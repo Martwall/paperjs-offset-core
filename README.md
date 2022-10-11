@@ -22,7 +22,7 @@ npm install paperjs-offset-core
 ```
 And then, in your project:
 ```javascript
-import paper from 'paper' // if using bundlers otherwise skip and include in <script>. See demo dir.
+import paper from 'paper/dist/paper-core' // if using bundlers otherwise skip and include in <script>. See demo dir.
 import { PaperOffset } from 'paperjs-offset'
 // Optionally setup paper
 let canvas = document.querySelector('canvas')
