@@ -20,6 +20,7 @@ jobs:
         with:
           node-version: 16
       - run: npm install
+      - run: npm run build
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.PAPERJS_OFFSET_CORE_NPM_TOKEN }}
